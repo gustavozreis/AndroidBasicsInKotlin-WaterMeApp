@@ -46,7 +46,7 @@ class PlantViewModel(application: Application): ViewModel() {
 
         // TODO: Generate a OneTimeWorkRequest with the passed in duration, time unit, and data
         //  instance
-        val myWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<WaterReminderWorker>()
+        val myWorkRequest = OneTimeWorkRequestBuilder<WaterReminderWorker>()
             .setInitialDelay(duration, unit)
             .setInputData(data)
             .build()
@@ -55,7 +55,8 @@ class PlantViewModel(application: Application): ViewModel() {
         val continuation = workManager.beginUniqueWork(
             plantName,
             ExistingWorkPolicy.REPLACE,
-            OneTimeWorkRequest.from(WaterReminderWorker::class.java))
+            myWorkRequest
+        )
 
         continuation.enqueue()
     }
